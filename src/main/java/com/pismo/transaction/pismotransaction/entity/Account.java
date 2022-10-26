@@ -33,6 +33,11 @@ public class Account extends AuditableEntity {
         this.number = number;
     }
 
+    public Account(Long id, String number) {
+        this.number = number;
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

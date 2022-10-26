@@ -16,6 +16,7 @@ import java.util.Objects;
         })
 public class Transaction extends AuditableEntity {
 
+
     @Id
     @GeneratedValue
     @ApiModelProperty(accessMode = ApiModelProperty.AccessMode.READ_ONLY, readOnly = true)
@@ -43,6 +44,10 @@ public class Transaction extends AuditableEntity {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getId() {
