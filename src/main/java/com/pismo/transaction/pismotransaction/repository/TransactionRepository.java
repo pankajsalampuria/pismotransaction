@@ -17,4 +17,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Query (value = "SELECT T FROM Transaction T WHERE T.account.id = ?1 AND T.operationType = ?2")
     public List<Transaction> findByAccountIdAndOperationTypeId(Long accountId, Long operationId);
 
+
+    @Query (value = "SELECT T FROM Transaction T WHERE T.account.id = ?1 AND T.operationType in ?2 AND T.balance != 0")
+    public List<Transaction> findByAccountIdAndOperationTypeIdNonBalancedRecords(Long accountId, List<Long> operationId);
+
 }

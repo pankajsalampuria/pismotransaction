@@ -34,6 +34,13 @@ public class Transaction extends AuditableEntity {
     private BigDecimal amount;
 
 
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    @NotNull(message = "Balance must be supplied")
+    private BigDecimal balance;
+
     @ApiModelProperty(accessMode = ApiModelProperty.AccessMode.READ_ONLY)
     private OffsetDateTime eventDate;
 
@@ -83,11 +90,18 @@ public class Transaction extends AuditableEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Transaction that = (Transaction) o;
-        return id.equals(that.id) && account.equals(that.account) && operationType == that.operationType && amount.equals(that.amount) && eventDate.equals(that.eventDate);
+        return id.equals(that.id) && account.equals(that.account) && operationType == that.operationType && amount.equals(that.amount) && eventDate.equals(that.eventDate)
+                && balance.equals(that.balance);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, account, operationType, amount, eventDate);
+        return Objects.hash(id, account, operationType, amount, eventDate, balance);
     }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
+
 }

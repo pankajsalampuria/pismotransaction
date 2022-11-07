@@ -151,10 +151,31 @@ class TransactionServiceTest {
 
         Transaction transaction = new Transaction();
         transaction.setAmount(amount);
+        transaction.setBalance(amount);
         transaction.setAccount(new Account(accountID, ""));
         transaction.setId(tranId);
         transaction.setOperationType(type);
 
         return transaction;
+    }
+
+    @Test
+    void adjustDebitTransactionBalances_AdjustCompleteAmount_ReduceDebitBalance() {
+        Transaction t1 = newTransaction(1l, 1l, new BigDecimal("-50.00"), OperationTypeEnum.NORMAL_PURCHASE);
+        Transaction t2 = newTransaction(1l, 1l, new BigDecimal("-23.50"), OperationTypeEnum.NORMAL_PURCHASE);
+        Transaction t3 = newTransaction(1l, 1l, new BigDecimal("-18.70"), OperationTypeEnum.NORMAL_PURCHASE);
+
+        List<Transaction> debits = new ArrayList<>();
+        debits.add(t1);
+        debits.add(t2);
+        debits.add(t3);
+
+        BigDecimal remainingBalance = service.adjustDebitTransactionBalances(debits, new BigDecimal("60.00"));
+
+        assertThat(t1.getBalance()).isEqualTo(new BigDecimal("0"));
+        assertThat(t2.getBalance()).isEqualTo(new BigDecimal("-13.50"));
+        assertThat(t3.getBalance()).isEqualTo(new BigDecimal("-18.70"));
+        assertThat(remainingBalance).isEqualTo(new BigDecimal("0"));
+
     }
 }
